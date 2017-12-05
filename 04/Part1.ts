@@ -13,8 +13,8 @@ function validatePassphrase(passphrase: string) {
   for (let word of words) {
     let reduced = words.filter(s => s === word)
     if (reduced.length > 1) return false
-    return true
   }
+  return true
 }
 
 let rd = readline.createInterface({
