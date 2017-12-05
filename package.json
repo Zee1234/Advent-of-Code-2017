@@ -1,0 +1,25 @@
+{
+  "name": "advent-of-code-2017",
+  "version": "1.0.0",
+  "description": "Advent of Code solutions in whatever languages I decide to implement them in!",
+  "main": "-",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zee1234/Advent-of-Code-2017.git"
+  },
+  "keywords": [
+    "AdventOfCode2017"
+  ],
+  "author": "Zee1234",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Zee1234/Advent-of-Code-2017/issues"
+  },
+  "homepage": "https://github.com/Zee1234/Advent-of-Code-2017#readme",
+  "dependencies": {
+    "@types/node": "^8.0.54"
+  }
+}
