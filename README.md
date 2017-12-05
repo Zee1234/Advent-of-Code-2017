@@ -1,2 +1,2 @@
 Completed:
-Day 1, 2, 3, _, 5
+Day 1, 2, 3, 4, 5
