@@ -1,36 +1,14 @@
+import { EPROTONOSUPPORT } from "constants";
+
 export class RepeatingList<T> {
   private _arr: Array<T>
 
-  constructor(iter: Array<T>) {
-    this._arr = iter.map( v => v )
+  constructor(...values: T[]) {
+    this._arr = values.map( v => v )
   }
 
   valueAt(v: number) {
     return this._arr[ v % this._arr.length ]
-  }
-}
-
-
-export class Point extends Array<number> {
-  constructor(...args: number[]) {
-    super(...args)
-  }
-
-  add(p: Point|number[]): Point {
-    return new Point(this.x+p[0], this.y+p[1])
-  }
-
-  get x() {
-    return this[0]
-  }
-  get y() {
-    return this[1]
-  }
-  set x(v) {
-    this[0] = v
-  }
-  set y(v) {
-    this[1] = v
   }
 }
 
@@ -46,6 +24,50 @@ let defaultProxy:ProxyHandler<ExtendableProxy> = {
 export class ExtendableProxy {
   constructor(definition: ProxyHandler<any> = defaultProxy) {
       return new Proxy(this, definition);
+  }
+}
+
+
+export class Point extends ExtendableProxy {
+  [index: number]: number
+  private _arr: number[]
+
+  constructor(...args: number[]) {
+    super({
+      get: (target, property, reciever) => {
+        if (property in target) {
+          return target[property]
+        } else {
+          return target._arr[property]
+        }
+      },
+      set: (target, property, value, reciever) => {
+        let numericalKey = Number.parseInt(property.toString())
+        if (isNaN(numericalKey)) {
+          return target[property] = value
+        } else {
+          return target._arr[numericalKey] = value
+        }
+      }
+    })
+    this._arr = new Array(...args)
+  }
+
+  add(p: Point|number[]): Point {
+    return new Point(this.x+p[0], this.y+p[1])
+  }
+
+  get x() {
+    return this._arr[0]
+  }
+  get y() {
+    return this._arr[1]
+  }
+  set x(v) {
+    this._arr[0] = v
+  }
+  set y(v) {
+    this._arr[1] = v
   }
 }
 
@@ -143,9 +165,9 @@ export class Grid<T> extends ExtendableProxy {
   sub([x1, x2]: [number, number], [y1, y2]: [number, number]): Grid<T>
   sub(xArr: number[], yArr: number[]): Grid<T>{
     let x1 = xArr[0]
-      , x2 = xArr[1] || x1
+      , x2 = !isNaN(xArr[1]) ? xArr[1] : x1
       , y1 = yArr[0]
-      , y2 = yArr[1] || y1
+      , y2 = !isNaN(yArr[1]) ? yArr[1] : y1
 
     let ret = new Grid<T>()
     if (x2 < x1) [x1, x2] = [x2, x1]
