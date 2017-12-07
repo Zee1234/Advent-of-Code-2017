@@ -14,7 +14,7 @@ export class Point extends ExtendableProxy {
         }
       },
       set: (target, property, value, reciever) => {
-        let numericalKey = Number.parseInt(property.toString())
+        let numericalKey = parseInt(property.toString())
         if (isNaN(numericalKey)) {
           return target[property] = value
         } else {
