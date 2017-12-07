@@ -91,6 +91,12 @@ export class Grid<T> extends ExtendableProxy {
     return ret
   }
 
+  map(callback: (value: T, x?: number, y?: number, self?: Grid<T>) => T ): Grid<T>{
+    let ret = this.clone()
+    ret.forEach( (v, x, y, s) => ret[x][y] = callback(v, x, y, s) )
+    return ret
+  }
+
   clone(): Grid<T> {
     // let ret = new Grid<T>()
     // this.forEach(merge(ret))
