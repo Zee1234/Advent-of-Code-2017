@@ -36,6 +36,16 @@ class SubGrid<T> extends ExtendableProxy {
   }
 }
 
+
+
+
+
+function merge<T>(newOne: Grid<T>) {
+  return (value: T, x: number, y: number) => {
+    newOne[x][y] = value
+  }
+}
+
 interface subArray extends Array<number> {
   1: number,
   2?: number
@@ -49,7 +59,7 @@ export class Grid<T> extends ExtendableProxy {
   grid: {
     [key: number]: SubGrid<T>
   }
-  constructor() {
+  constructor(original?: Grid<T>) {
     super({
       get: (target, property, reciever) => {
         let p = parseInt(property.toString())
@@ -62,6 +72,7 @@ export class Grid<T> extends ExtendableProxy {
       }
     } as GridProxy<T>)
     this.grid = {}
+    if (original) original.forEach(merge(this))
   }
 
   forEach(callback: (value: T, x?: number, y?: number, self?: Grid<T>) => void) {
@@ -74,14 +85,17 @@ export class Grid<T> extends ExtendableProxy {
     })
   }
 
-  merge(other: Grid<T>) {
-    let ret = new Grid<T>()
-    let merge = (value: T, x: number, y: number) => {
-      ret[x][y] = value
-    }
-    this.forEach(merge)
-    other.forEach(merge)
+  merge(other: Grid<T>): Grid<T> {
+    let ret = this.clone()
+    other.forEach(merge(ret))
     return ret
+  }
+
+  clone(): Grid<T> {
+    // let ret = new Grid<T>()
+    // this.forEach(merge(ret))
+    // return ret
+    return new Grid(this)
   }
 
   reduce(callback: (accumulator: T, value: T, x?: number, y?: number, self?: Grid<T>) => T): T
