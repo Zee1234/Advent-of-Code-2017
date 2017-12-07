@@ -15,7 +15,7 @@ class SubGrid<T> extends ExtendableProxy {
   constructor() {
     super({
       get: (target, property, reciever) => {
-        let p = Number.parseInt(property.toString())
+        let p = parseInt(property.toString())
         if (isNaN(p)) {
           return target[property]
         } else {
@@ -52,7 +52,7 @@ export class Grid<T> extends ExtendableProxy {
   constructor() {
     super({
       get: (target, property, reciever) => {
-        let p = Number.parseInt(property.toString())
+        let p = parseInt(property.toString())
         if (isNaN(p)) {
           return target[property]
         } else {
@@ -66,12 +66,22 @@ export class Grid<T> extends ExtendableProxy {
 
   forEach(callback: (value: T, x?: number, y?: number, self?: Grid<T>) => void) {
     Object.keys(this.grid).forEach( xs => {
-      let x = Number.parseInt(xs)
+      let x = parseInt(xs)
       Object.keys(this[x].subgrid).forEach( ys => {
-        let y = Number.parseInt(ys)
+        let y = parseInt(ys)
         callback(this[x][y], x, y, this)
       })
     })
+  }
+
+  merge(other: Grid<T>) {
+    let ret = new Grid<T>()
+    let merge = (value: T, x: number, y: number) => {
+      ret[x][y] = value
+    }
+    this.forEach(merge)
+    other.forEach(merge)
+    return ret
   }
 
   reduce(callback: (accumulator: T, value: T, x?: number, y?: number, self?: Grid<T>) => T): T
