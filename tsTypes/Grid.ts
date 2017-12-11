@@ -1,4 +1,3 @@
-import {ProxyHandler} from './buggy'
 import {ExtendableProxy} from './ExtendableProxy'
 
 type SubGridProxyGet<T> = (target: SubGrid<T>, property: number, reciever: SubGrid<T>) => T

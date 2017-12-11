@@ -1,5 +1,3 @@
-import {ProxyHandler, Proxy} from './buggy'
-
 let defaultProxy:ProxyHandler<ExtendableProxy> = {
   set: function(object: any, key, value, proxy) {
       object[key] = value;
