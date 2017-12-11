@@ -1,4 +1,4 @@
-interface coordInfo<T>{
+interface CoordInfo<T>{
   x: number,
   y: number,
   element?: T
@@ -11,38 +11,70 @@ class HexGrid<T> {
     [index: number]: {[index: number]: T}
   } = {}
 
-  northEast(x: number, y: number) {
+  northEast(x: number|CoordInfo<T>, y?: number) {
     let retX: number, retY: number
-    retX = x+1
-    retY = x%2 ? y+1 : y
-    return {x: retX, y: retY, element: this.get(retX, retY)}
+    if (typeof x === 'number') {
+      retX = x+1
+      retY = x%2 ? y+1 : y
+      return {x: retX, y: retY, element: this.get(retX, retY)}
+    } else {
+      retX = x.x+1
+      retY = x.x%2 ? x.y+1 : x.y
+      return {x: retX, y: retY, element: this.get(retX, retY)}
+    }
   }
-  southEast(x: number, y: number) {
+  southEast(x: number|CoordInfo<T>, y?: number) {
     let retX: number, retY: number
-    retX = x+1
-    retY = x%2 ? y : y-1
-    return {x: retX, y: retY, element: this.get(retX, retY)}
+    if (typeof x === 'number') {
+      retX = x+1
+      retY = x%2 ? y : y-1
+      return {x: retX, y: retY, element: this.get(retX, retY)}
+    } else {
+      retX = x.x+1
+      retY = x.x%2 ? x.y : x.y-1
+      return {x: retX, y: retY, element: this.get(retX, retY)}
+    }
   }
-  northWest(x: number, y: number) {
+  northWest(x: number|CoordInfo<T>, y?: number) {
     let retX: number, retY: number
-    retX = x-1
-    retY = x%2 ? y+1 : y
-    return {x: retX, y: retY, element: this.get(retX, retY)}
+    if (typeof x === 'number') {
+      retX = x-1
+      retY = x%2 ? y+1 : y
+      return {x: retX, y: retY, element: this.get(retX, retY)}
+    } else {
+      retX = x.x-1
+      retY = x.x%2 ? x.y+1 : x.y
+      return {x: retX, y: retY, element: this.get(retX, retY)}
+    }
   }
-  southWest(x: number, y: number) {
+  southWest(x: number|CoordInfo<T>, y?: number) {
     let retX: number, retY: number
-    retX = x-1
-    retY = x%2 ? y : y-1
-    return {x: retX, y: retY, element: this.get(retX, retY)}
+    if (typeof x === 'number') {
+      retX = x-1
+      retY = x%2 ? y : y-1
+      return {x: retX, y: retY, element: this.get(retX, retY)}
+    } else {
+      retX = x.x-1
+      retY = x.x%2 ? x.y : x.y-1
+      return {x: retX, y: retY, element: this.get(retX, retY)}
+    }
   }
-  north(x: number, y: number) {
-    return {x: x, y: y+1, element: this.get(x, y+1)}
+  north(x: number|CoordInfo<T>, y?: number) {
+    if (typeof x === 'number') {
+      return {x: x, y: y+1, element: this.get(x, y+1)}
+    } else {
+      return {x: x.x, y: x.y+1, element: this.get(x.x, x.y+1)}
+    }
   }
-  south(x: number, y: number) {
-    return {x: x, y: y-1, element: this.get(x, y-1)}
+  south(x: number|CoordInfo<T>, y?: number) {
+    if (typeof x === 'number') {
+      return {x: x, y: y-1, element: this.get(x, y-1)}
+    } else {
+      return {x: x.x, y: x.y-1, element: this.get(x.x, x.y-1)}
+    }
   }
 
-  get(x: number|coordInfo<T>, y: number) {
+  get(x: number|CoordInfo<T>, y?: number) {
     if (typeof x === 'number') {
       this.container[x] = this.container[x] || {}
       return this.container[x][y]
@@ -52,7 +84,7 @@ class HexGrid<T> {
     }
     
   }
-  set(value: T, x: number|coordInfo<T>, y: number) {
+  set(value: T, x: number|CoordInfo<T>, y?: number) {
     if (typeof x === 'number') {
       this.container[x] = this.container[x] || {}
       return this.container[x][y] = value
@@ -63,9 +95,9 @@ class HexGrid<T> {
     
   }
 
-  shortestRoute(start: coordInfo<T>, end: coordInfo<T>, step: number = 0): number {
+  shortestRoute(start: CoordInfo<T>, end: CoordInfo<T>, step: number = 0): number {
     if (start.x === end.x && start.y === end.y) return step
-    let ret: coordInfo<T>
+    let ret: CoordInfo<T>
     if      (start.x < end.x) {
       if      (start.y < end.y) ret = this.northEast(start.x, start.y)
       else if (start.y > end.y) ret = this.southEast(start.x, start.y)
@@ -87,4 +119,4 @@ class HexGrid<T> {
 
 
 
-export {HexGrid}
+export {HexGrid, CoordInfo}
