@@ -131,4 +131,11 @@ export class Grid<T> extends ExtendableProxy {
     }
     return ret
   }
+
+  forCardinalNeighbors(x: number, y: number, callback: (value: T, x: number, y: number, self: Grid<T>)=>void) {
+    callback(this[x][y+1], x, y+1, this)
+    callback(this[x+1][y], x+1, y, this)
+    callback(this[x][y-1], x, y-1, this)
+    callback(this[x-1][y], x-1, y, this)
+  }
 }
