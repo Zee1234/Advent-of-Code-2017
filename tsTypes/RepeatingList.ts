@@ -39,6 +39,17 @@ export class RepeatingList<T> {
     return new RepeatingList(...this._arr.reverse())
   }
 
+  insertAfter(value: T, pos: number) {
+    let spot = this.indexAt(pos)+1
+    let end = this._arr.slice(spot)
+    this._arr[spot] = value
+    let start = this._arr.slice(0,spot+1)
+    this._arr = start.concat(end)
+    return spot
+  }
+
+  indexOf(v: T) { return this._arr.indexOf(v) }
+
   get reduce() {
     return this._arr.reduce
   }
