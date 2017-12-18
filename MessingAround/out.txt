@@ -1,0 +1,11 @@
+
+Wrap input around enough
+Translate numbers into a useful form
+Merge adjacent twins
+Remove excess identifiers
+Transform from Unary into some decimal representation
+Transform from some decimal representation to standard decimal representation
+
+Answer: 1228
+1he following number is meaningless
+1222
