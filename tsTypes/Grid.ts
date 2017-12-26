@@ -59,6 +59,7 @@ export class Grid<T> extends ExtendableProxy {
   grid: {
     [key: number]: SubGrid<T>
   }
+  public data: any = {}
   constructor(original?: Grid<T>) {
     super({
       get: (target, property, reciever) => {
@@ -137,5 +138,11 @@ export class Grid<T> extends ExtendableProxy {
     callback(this[x+1][y], x+1, y, this)
     callback(this[x][y-1], x, y-1, this)
     callback(this[x-1][y], x-1, y, this)
+  }
+
+  offset({x, y}: {x: number, y: number}) {
+    let ret = new Grid<T>()
+    this.forEach( (v, x0, y0) => ret[x0+x][y0+y] = v )
+    return ret
   }
 }

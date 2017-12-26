@@ -14,7 +14,12 @@ export class RepeatingList<T> {
   }
 
   valueAt(v: number) {
-    return this._arr[ this.indexAt(v) ]
+    if (v > -1) {
+      return this._arr[ this.indexAt(v) ]
+    } else {
+      while ( v < 0) v += this._arr.length
+      return this._arr[ this.indexAt(v) ]
+    }
   }
 
   setValueAt(index: number, value: T) {
